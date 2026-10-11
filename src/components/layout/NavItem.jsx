@@ -1,6 +1,6 @@
 import { Link, useLocation } from 'react-router-dom'
 
-export function NavItem({ to, label }) {
+export function NavItem({ to, label, onClick }) {
   const location = useLocation()
   let active = false
 
@@ -15,5 +15,5 @@ export function NavItem({ to, label }) {
     className += ' active'
   }
 
-  return <Link className={className} to={to}>{label}</Link>
+  return <Link className={className} to={to} onClick={onClick}>{label}</Link>
 }

@@ -1,10 +1,11 @@
 import { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { ThemeToggle } from '../components/layout/ThemeToggle'
 import { supabase } from '../lib/supabase'
 
-export function AuthPage({ onAuthed }) {
-  const [mode, setMode] = useState('login')
+export function AuthPage({ onAuthed, initialMode = 'login' }) {
+  const navigate = useNavigate()
+  const [mode, setMode] = useState(initialMode)
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
@@ -18,6 +19,7 @@ export function AuthPage({ onAuthed }) {
     if (!supabase) {
       setLoading(false)
       onAuthed()
+      navigate('/')
       return
     }
 
@@ -35,6 +37,9 @@ export function AuthPage({ onAuthed }) {
       setError('Account created. Check your email to confirm the address.')
     } else {
       onAuthed()
+      setLoading(false)
+      navigate('/')
+      return
     }
 
     setLoading(false)
@@ -61,13 +66,10 @@ export function AuthPage({ onAuthed }) {
   }
 
   function switchMode() {
-    if (mode === 'login') {
-      setMode('signup')
-    } else {
-      setMode('login')
-    }
-
+    const nextMode = mode === 'login' ? 'signup' : 'login'
+    setMode(nextMode)
     setError('')
+    navigate(nextMode === 'signup' ? '/signup' : '/login', { replace: true })
   }
 
   let kicker = 'WELCOME BACK'
@@ -86,10 +88,10 @@ export function AuthPage({ onAuthed }) {
     <div className="auth-screen">
       <ThemeToggle className="auth-theme-toggle" />
       <div className="auth-panel">
-        <Link to="/" className="auth-brand mono">KISOKATA</Link>
+        <Link to="/" className="auth-brand mono">KISO</Link>
         <span className="mono section-kicker">{kicker}</span>
         <h1>{title}</h1>
-        <p className="lead">Access Cloud lessons and interview intelligence from your KisoKata account.</p>
+        <p className="lead">Access Cloud lessons and interview intelligence with your Kiso account.</p>
 
         <form onSubmit={submit}>
           <label>

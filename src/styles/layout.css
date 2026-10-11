@@ -20,3 +20,41 @@
 .built-links a:hover { color: var(--ink); }
 .theme-toggle { width: 28px; height: 28px; display: inline-grid; place-items: center; border: 1px solid transparent; background: transparent; color: var(--muted); transition: color .18s ease, border-color .18s ease, background .18s ease; }
 .theme-toggle:hover { color: var(--ink); border-color: var(--line-strong); background: var(--surface-2); }
+
+.nav-auth-login {
+  color: var(--muted);
+  font-size: 12px;
+  white-space: nowrap;
+}
+.nav-auth-login:hover {
+  color: var(--ink);
+}
+.nav-auth-signup {
+  min-height: 30px;
+  padding: 0 10px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--accent);
+  background: var(--accent);
+  color: var(--accent-contrast);
+  font-size: 12px;
+  white-space: nowrap;
+  transition: background .18s ease, border-color .18s ease, transform .18s ease;
+}
+.nav-auth-signup:hover {
+  background: var(--accent-hover);
+  border-color: var(--accent-hover);
+  transform: translateY(-1px);
+}
+.nav-mobile-login {
+  display: none;
+}
+
+.profile-loading {
+  min-height: 48vh;
+  display: grid;
+  place-items: center;
+  color: var(--muted);
+  font-size: 10px;
+}

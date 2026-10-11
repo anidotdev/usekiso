@@ -11,6 +11,10 @@
   .nav-links.nav-open { display: flex; }
   .mobile-menu { display: inline-flex; }
   .logout-btn span { display: none; }
+  .nav-auth-login { display: none; }
+  .nav-mobile-login { display: block; }
+  .nav-auth-signup { min-height: 29px; padding: 0 8px; font-size: 11px; }
+  .nav-right { gap: 10px; }
   .companies-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .company-page-header { align-items: start; flex-direction: column; }
   .company-page-stats { width: 100%; grid-template-columns: repeat(2, minmax(0, 1fr)); }

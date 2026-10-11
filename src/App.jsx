@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Navigate, Route, Routes } from 'react-router-dom'
+import { Navigate, Route, Routes, useLocation } from 'react-router-dom'
 import { AppShell } from './components/layout/AppShell'
 import { AuthPage } from './pages/AuthPage'
 import { CloudIndexPage } from './pages/CloudIndexPage'
@@ -8,7 +8,7 @@ import { CompaniesPage } from './pages/CompaniesPage'
 import { CompanyPage } from './pages/CompanyPage'
 import { HomePage } from './pages/HomePage'
 import { ProfilePage } from './pages/ProfilePage'
-import { APP_CONFIG, hasSupabaseEnv } from './lib/config'
+import { APP_CONFIG } from './lib/config'
 import { supabase } from './lib/supabase'
 
 function getUserName(session) {
@@ -28,27 +28,43 @@ function getUserName(session) {
 }
 
 export default function App() {
+  const location = useLocation()
   const [userName, setUserName] = useState(APP_CONFIG.builtBy)
-  const [authLoading, setAuthLoading] = useState(hasSupabaseEnv)
-  const [authed, setAuthed] = useState(!hasSupabaseEnv)
+  const [authed, setAuthed] = useState(false)
+  const [authResolved, setAuthResolved] = useState(!supabase)
 
   useEffect(() => {
     if (!supabase) {
       return undefined
     }
 
+    let active = true
+
     supabase.auth.getSession().then(({ data }) => {
-      setAuthed(Boolean(data.session))
-      setAuthLoading(false)
-      setUserName(getUserName(data.session))
+      if (!active) return
+
+      const session = data.session
+      setAuthed(Boolean(session))
+      setUserName(getUserName(session))
+      setAuthResolved(true)
+    }).catch(() => {
+      if (!active) return
+      setAuthed(false)
+      setUserName(APP_CONFIG.builtBy)
+      setAuthResolved(true)
     })
 
     const { data } = supabase.auth.onAuthStateChange((_event, session) => {
+      if (!active) return
       setAuthed(Boolean(session))
       setUserName(getUserName(session))
+      setAuthResolved(true)
     })
 
-    return () => data.subscription.unsubscribe()
+    return () => {
+      active = false
+      data.subscription.unsubscribe()
+    }
   }, [])
 
   async function logout() {
@@ -57,29 +73,43 @@ export default function App() {
     }
 
     setAuthed(false)
+    setUserName(APP_CONFIG.builtBy)
   }
 
-  if (authLoading) {
+  function handleAuthed() {
+    setAuthed(true)
+  }
+
+  if (location.pathname === '/login' || location.pathname === '/signup') {
     return (
-      <div className="boot-screen">
-        <span className="mono">LOADING</span>
-      </div>
+      <AuthPage
+        key={location.pathname}
+        initialMode={location.pathname === '/signup' ? 'signup' : 'login'}
+        onAuthed={handleAuthed}
+      />
     )
   }
 
-  if (!authed) {
-    return <AuthPage onAuthed={() => setAuthed(true)} />
-  }
-
   return (
-    <AppShell userName={userName} logout={logout}>
+    <AppShell userName={userName} authed={authed} logout={logout}>
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/cloud" element={<CloudIndexPage />} />
         <Route path="/cloud/:chapterSlug/*" element={<CloudPage />} />
         <Route path="/companies" element={<CompaniesPage />} />
         <Route path="/companies/:companySlug" element={<CompanyPage />} />
-        <Route path="/profile" element={<ProfilePage userName={userName} />} />
+        <Route
+          path="/profile"
+          element={
+            !authResolved ? (
+              <div className="profile-loading mono">LOADING PROFILE</div>
+            ) : authed ? (
+              <ProfilePage userName={userName} />
+            ) : (
+              <Navigate to="/login" replace />
+            )
+          }
+        />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </AppShell>

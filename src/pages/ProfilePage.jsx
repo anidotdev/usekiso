@@ -8,7 +8,7 @@ export function ProfilePage({ userName }) {
         <div>
           <span className="mono">ACCOUNT</span>
           <strong>{userName}</strong>
-          <p>Your KisoKata account is used for authentication and access to the platform.</p>
+          <p>Your Kiso account is used for authentication and access to the platform.</p>
         </div>
 
         <div>
