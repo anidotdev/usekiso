@@ -35,7 +35,7 @@ export function AppShell({ children, userName, logout }) {
   return (
     <div className="app-shell">
       <header className="top-nav">
-        <Link to="/" className="brand">KISOKATA</Link>
+        <Link to="/" className="brand">KISO</Link>
 
         <nav className={navClass}>
           <NavItem to="/" label="Home" />

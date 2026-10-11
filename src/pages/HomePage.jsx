@@ -72,7 +72,7 @@ export function HomePage() {
 
       <section className="home-section">
         <div className="section-intro">
-          <span className="mono section-kicker">THE KISOKATA PATH</span>
+          <span className="mono section-kicker">THE KISO PATH</span>
 
           <h2>
             Learn the systems. Then study the questions companies actually ask.
