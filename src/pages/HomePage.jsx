@@ -2,6 +2,7 @@ import { ArrowRight, ArrowUpRight } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { companies, interviewQuestions } from '../data/interviews'
 import { cloudLessons } from '../data/cloud'
+import cloudServerRack from '../assets/cloud-server-rack.svg?raw'
 
 export function HomePage() {
   return (
@@ -9,53 +10,38 @@ export function HomePage() {
       <div className="hero-shell">
         <div className="hero-grid" aria-hidden="true" />
 
-        <div className="cloud-floats" aria-hidden="true">
-          <img
-            className="cloud-float cloud-float-azure"
-            src="/cloud-logos/azure.png"
-            alt=""
-          />
-          <img
-            className="cloud-float cloud-float-aws"
-            src="/cloud-logos/aws.png"
-            alt=""
-          />
-          <img
-            className="cloud-float cloud-float-google"
-            src="/cloud-logos/google-cloud.png"
-            alt=""
-          />
-          <img
-            className="cloud-float cloud-float-oracle"
-            src="/cloud-logos/oracle.png"
-            alt=""
-          />
-        </div>
+        <div className="hero-main">
+          <div className="hero-copy">
+            <span className="hero-kicker mono">
+              TECHNICAL LEARNING, WITHOUT THE GUESSWORK.
+            </span>
 
-        <div className="hero-copy">
-          <span className="hero-kicker mono">
-            TECHNICAL LEARNING, WITHOUT THE GUESSWORK.
-          </span>
+            <h1>
+              <span className="hero-title-first">Stop randomly</span>{' '}
+              learning <span className="hero-accent">cloud</span>.
+            </h1>
 
-          <h1>
-            Stop randomly
-            <br />
-            learning <span className="hero-accent">cloud</span>.
-          </h1>
+            <p className="hero-lead">
+              Learn Cloud from first principles, then prepare for DSA interviews
+              using questions reported from real interview experiences.
+            </p>
 
-          <p className="hero-lead">
-            Learn Cloud from first principles, then prepare for DSA interviews
-            using questions reported from real interview experiences.
-          </p>
+            <div className="hero-actions">
+              <Link className="button button-accent" to="/cloud">
+                Start Cloud <ArrowRight size={15} />
+              </Link>
 
-          <div className="hero-actions">
-            <Link className="button button-accent" to="/cloud">
-              Start Cloud <ArrowRight size={15} />
-            </Link>
+              <Link className="button button-outline" to="/companies">
+                Explore Companies <ArrowUpRight size={14} />
+              </Link>
+            </div>
+          </div>
 
-            <Link className="button button-outline" to="/companies">
-              Explore Companies <ArrowUpRight size={14} />
-            </Link>
+          <div className="hero-illustration">
+            <div
+              className="server-rack-illustration"
+              dangerouslySetInnerHTML={{ __html: cloudServerRack }}
+            />
           </div>
         </div>
 
